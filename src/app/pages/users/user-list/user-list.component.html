@@ -1,0 +1,62 @@
+<nb-card>
+  <nb-card-header>
+    Contact List
+    <div class="fa-pull-right">
+      <button type="button" class="btn btn-sm btn-primary" routerLink="/pages/users/add">
+        New User
+      </button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" #tableRef>
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> ID </th>
+        <!-- TODO: MOVE THE EDIT AND DELETE TO THE DETAIL SECTION.  LOOKS BETTER AND ENSURES THAT THERE IS A NEED TO EDIT OR REMOVE -->
+        <td mat-cell *matCellDef="let element" [class.example-expanded-row]="expandedElement === element"
+            (click)="expandedElement = expandedElement === element ? null : element"> {{element.id}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef> E-mail </th>
+        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Action </th>
+        <td mat-cell *matCellDef="let element">
+          <nb-actions size="medium" fullWidth>
+            <nb-action>
+              <nb-icon class="action-icon" icon="edit" [routerLink]="['/pages/users/edit', element.id | number]"></nb-icon>
+            </nb-action>
+            <nb-action>
+              <nb-icon class="action-icon" icon="trash-outline" (click)="onDeleteConfirm(element.id)"></nb-icon>
+            </nb-action>
+          </nb-actions>
+        </td>
+      </ng-container>
+      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+          <div class="example-element-detail"
+               [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+            <div class="example-element-diagram">
+              <div class="example-element-position"> {{element.id}} </div>
+              <div class="example-element-weight"> {{element.email}} </div>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
+          class="example-element-row">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+    </table>
+  </nb-card-body>
+</nb-card>
+

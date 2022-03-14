@@ -1,0 +1,97 @@
+<nb-card>
+    <nb-card-header>Add Equipment</nb-card-header>
+    <nb-card-body>
+        <form [formGroup]="equipmentForm" (ngSubmit)="submitAddNewEquipment()">
+            <div class="row">
+                <div class="col-5">
+                    <nb-card>
+                        <nb-card-header>
+                            <span style="float:right;">
+                            <div *ngIf="fileData !== null">
+                              <button nbButton hero (click)="removeImage()">Remove image</button>
+                          </div>
+                          </span>
+                        </nb-card-header>
+                        <div class="mb-3" *ngIf="previewUrl" style="text-align:center;width:100%;">
+                            <img [src]="previewUrl" height="200"/>
+                        </div>
+                        <nb-card-footer>
+                            <input #fileInput class="fileSelectButton" type="file" (change)="onFileChange($event)"
+                                   accept="image/gif, image/jpeg, image/png"/>
+                        </nb-card-footer>
+                    </nb-card>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="name" class="col-sm-3 col-form-label">Name</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="name" formControlName="name"
+                           placeholder="Equipment Name">
+                    <ng-container *ngIf="f.name.invalid && f.name.touched">
+                        <p class="error-message" *ngIf="f.name.errors?.required">
+                            The name is required
+                        </p>
+                        <p class="error-mesage" *ngIf="f.name.errors?.minlength">
+                            The name field is too short
+                        </p>
+                        <p class="error-message" *ngIf="f.name.errors?.maxlength">
+                            The name field is too long
+                        </p>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="mediaLink" class="col-sm-3 col-form-label">Media Link</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="mediaLink" formControlName="mediaLink"
+                           placeholder="Media Link">
+                    <ng-container *ngIf="f.mediaLink.invalid && f.mediaLink.touched">
+                        <p class="error-mesage" *ngIf="f.mediaLink.errors?.minlength">
+                            The Media Link field is too short
+                        </p>
+                        <p class="error-message" *ngIf="f.mediaLink.errors?.maxlength">
+                            The Media Link field is too long
+                        </p>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="description" class="col-sm-3 col-form-label">Description</label>
+                <div class="col-sm-9">
+                    <textarea rows="5" nbInput fullWidth shape="round" id="description"
+                              minlength="8"
+                              maxlength="2000"
+                              width="100%"
+                              placeholder="Equipment Description"
+                              formControlName="description"></textarea>
+                    <ng-container *ngIf="f.description.invalid && f.description.touched">
+                        <p class="error-mesage" *ngIf="f.description.errors?.minlength">
+                            The name field is too short
+                        </p>
+                        <p class="error-message" *ngIf="f.description.errors?.maxlength">
+                            The name field is too long
+                        </p>
+                        <p class="error-message" *ngIf="f.description.errors?.pattern">
+                            Please enter a valid description
+                        </p>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="category" class="col-sm-3 col-form-label">Category</label>
+                <div class="col-sm-9">
+                    <nb-select id="category" name="category" formControlName="category" fullWidth>
+                        <nb-option value="" selected>-Select-</nb-option>
+                        <nb-option value="cardio-mach">Cardiovascular Machines</nb-option>
+                        <nb-option value="res-mach">Resistance Machines</nb-option>
+                        <nb-option value="freeweight">Free Weight Equipment</nb-option>
+                        <nb-option value="gen">General</nb-option>
+                    </nb-select>
+                </div>
+            </div>
+            <div>
+                <button nbButton hero>Add Equipment</button>
+            </div>
+        </form>
+    </nb-card-body>
+</nb-card>

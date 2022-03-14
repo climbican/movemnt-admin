@@ -1,0 +1,319 @@
+<nb-card>
+  <nb-card-header>Update Workout</nb-card-header>
+  <nb-card-body>
+    <div class="row">
+      <!-- IMAGE 1 -->
+      <div class="col-5">
+        <nb-card>
+          <nb-card-header> Select start or single Image
+            <span style="float:right;"><button nbButton hero color="primary" (click)="removeImage(imageOneId, 1)">Remove</button></span>
+          </nb-card-header>
+          <div class="mb-3" *ngIf="previewUrl" style="text-align:center;width:100%;">
+            <img [src]="previewUrl" height="200"/>
+          </div>
+          <nb-card-footer>
+            <input class="fileSelectButton" type="file" (change)="onFileChange($event, 1)" />
+          </nb-card-footer>
+        </nb-card>
+      </div>
+      <div class="col-2"></div>
+      <!-- IMAGE 2 -->
+      <div class="col-5">
+        <nb-card>
+          <nb-card-header> Select end Image
+            <span style="float:right;"><button nbButton hero color="primary" (click)="removeImage(imageTwoId, 2)">Remove</button></span></nb-card-header>
+          <div class="mb-3" *ngIf="previewUrlTwo" style="text-align:center;width:100%;">
+            <img [src]="previewUrlTwo" height="200"/>
+          </div>
+          <nb-card-footer>
+            <input class="fileSelectButton" type="file" (change)="onFileChange($event, 2)" />
+          </nb-card-footer>
+        </nb-card>
+      </div>
+      <!-- IMAGE 2 END -->
+    </div>
+    <form [formGroup]="editWorkoutForm" (ngSubmit)="submitEditWorkout()">
+      <div class="form-group row">
+        <label for="mediaLink" class="col-sm-3 col-form-label">Media Link</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" id="mediaLink" formControlName="mediaLink" placeholder="Media Link">
+          <ng-container *ngIf="f.mediaLink.invalid && f.mediaLink.touched">
+            <p class="error-mesage" *ngIf="f.mediaLink.errors?.minlength">
+              The Media Link field is too short
+            </p>
+            <p class="error-message" *ngIf="f.mediaLink.errors?.maxlength">
+              The Media Link field is too long
+            </p>
+          </ng-container>
+        </div>
+      </div>
+      <!-- MEDIA TYPE -->
+      <div class="form-group row">
+        <label for="exerciseType" class="col-sm-3 col-form-label">Media Type</label>
+        <div class="col-sm-9">
+          <nb-select id="mediaType" name="mediaType" formControlName="mediaType" fullWidth>
+            <nb-option value="0" selected>--Select--</nb-option>
+            <nb-option value="image">Static Image</nb-option>
+            <nb-option value="video">Video Link</nb-option>
+            <nb-option value="audio">Audio Link</nb-option>
+            <nb-option value="document">Document</nb-option>
+          </nb-select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="title" class="col-sm-3 col-form-label">Title</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" id="title" formControlName="title" placeholder="Workout Title">
+          <ng-container *ngIf="f.title.invalid && f.title.touched">
+            <p class="error-message" *ngIf="f.title.errors?.required">
+              The title is required
+            </p>
+            <p class="error-mesage" *ngIf="f.title.errors?.minlength">
+              The title field is too short
+            </p>
+            <p class="error-message" *ngIf="f.title.errors?.maxlength">
+              The title field is too long
+            </p>
+          </ng-container>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="title" class="col-sm-3 col-form-label">Sub Title</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" id="subTitle" formControlName="subTitle" placeholder="Sub Title">
+          <ng-container *ngIf="f.subTitle.invalid && f.subTitle.touched">
+            <p class="error-mesage" *ngIf="f.subTitle.errors?.minlength">
+              The Sub Title field is too short
+            </p>
+            <p class="error-message" *ngIf="f.subTitle.errors?.maxlength">
+              The Sub Title field is too long
+            </p>
+          </ng-container>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="trainerCreditText" class="col-sm-3 col-form-label">Trainer Credit Text</label>
+        <div class="col-sm-9">
+          <textarea rows="5" nbInput fullWidth shape="round" id="trainerCreditText"
+                    minlength="8"
+                    maxlength="2000"
+                    width="100%"
+                    placeholder="short Trainer Credit"
+                    formControlName="trainerCreditText"></textarea>
+          <ng-container *ngIf="f.trainerCreditText.invalid && f.trainerCreditText.touched">
+            <p class="error-mesage" *ngIf="f.trainerCreditText.errors?.minlength">
+              The name field is too short
+            </p>
+            <p class="error-message" *ngIf="f.trainerCreditText.errors?.maxlength">
+              The name field is too long
+            </p>
+            <p class="error-message" *ngIf="f.trainerCreditText.errors?.pattern">
+              Please enter a valid description
+            </p>
+          </ng-container>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="ownerLink" class="col-sm-3 col-form-label">Owner Link</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" id="ownerLink" formControlName="ownerLink" placeholder="Owner Link">
+          <ng-container *ngIf="f.ownerLink.invalid && f.ownerLink.touched">
+            <p class="error-mesage" *ngIf="f.mediaLin.errors?.minlength">
+              The Media Link field is too short
+            </p>
+            <p class="error-message" *ngIf="f.ownerLink.errors?.maxlength">
+              The Media Link field is too long
+            </p>
+          </ng-container>
+        </div>
+      </div>
+      <!-- MUSCLE GROUP START -->
+      <div class="form-group row">
+        <label for="mainMuscleGroupId" class="col-sm-3 col-form-label">Muscle Group</label>
+        <div class="col-sm-9">
+          <nb-select id="mainMuscleGroupId" name="mainMuscleGroupId" formControlName="mainMuscleGroupId" fullWidth>
+            <nb-option *ngFor="let m of muscleGroups" [value]="m.id">{{m.name}}</nb-option>
+          </nb-select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <!-- todo: adjust right side arrow -->
+        <label for="secondaryMuscleGroupId" class="col-sm-3 col-form-label">Secondary Muscle Group</label>
+        <div class="col-sm-9">
+          <mat-select id="secondaryMuscleGroupId"
+                      name="secondaryMuscleGroupId"
+                      formControlName="secondaryMuscleGroupId"
+                      class="multi-select" multiple>
+            <mat-option *ngFor="let m of muscleGroups" [value]="m.id">{{m.name}}</mat-option>
+          </mat-select>
+        </div>
+      </div>
+      <!-- / END MUSCLE GROUP -->
+      <div class="form-group row">
+        <label for="recommendedInterval" class="col-sm-3 col-form-label">Recommended Interval (sec)</label>
+        <div class="col-sm-9">
+          <nb-select id="recommendedInterval" name="recommendedInterval" formControlName="recommendedInterval" fullWidth>
+            <nb-option value="0">0</nb-option>
+            <nb-option value="15">15</nb-option>
+            <nb-option value="30">30</nb-option>
+            <nb-option value="45">45</nb-option>
+            <nb-option value="60">60</nb-option>
+            <nb-option value="75">1 min 15 sec</nb-option>
+            <nb-option value="90">1 min 30 sec</nb-option>
+            <nb-option value="105">1 min 45 sec</nb-option>
+            <nb-option value="120">2 min</nb-option>
+          </nb-select>
+        </div>
+      </div>
+      <!-- should probably turn into a select -->
+      <div class="form-group row">
+        <label for="exerciseType" class="col-sm-3 col-form-label">Exercise Type</label>
+        <div class="col-sm-9">
+          <nb-select id="exerciseType" name="exerciseType" formControlName="exerciseType" fullWidth>
+            <nb-option>--select--</nb-option>
+            <nb-option *ngFor="let w of workoutTypesSelect" [value]="w.id">{{w.name}}</nb-option>
+          </nb-select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <!-- todo: adjust right side arrow -->
+        <label for="equipmentList" class="col-sm-3 col-form-label">Equipment List</label>
+        <div class="col-sm-9">
+          <mat-select id="equipmentList" name="equipmentList"  formControlName="equipmentList" class="multi-select" multiple>
+            <mat-option *ngFor="let e of equipmentList" [value]="e.id">{{e.name}}</mat-option>
+          </mat-select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="mechanics" class="col-sm-3 col-form-label">Mechanics</label>
+        <div class="col-sm-9">
+          <nb-select id="mechanics" name="mechanics" formControlName="mechanics" fullWidth>
+            <nb-option value="isolation">Isolation / Single-Joint</nb-option>
+            <nb-option value="compound">Compound</nb-option>
+          </nb-select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="forceType" class="col-sm-3 col-form-label">Force Type</label>
+        <div class="col-sm-9">
+          <nb-select id="forceType" name="forceType" formControlName="forceType" fullWidth>
+            <nb-option value="push" selected>Push</nb-option>
+            <nb-option value="pull">Pull</nb-option>
+            <nb-option value="iso">Isometric / Static</nb-option>
+          </nb-select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="experienceLevel" class="col-sm-3 col-form-label">Experience Level</label>
+        <div class="col-sm-9">
+          <nb-select id="experienceLevel" name="experienceLevel" formControlName="experienceLevel" fullWidth>
+            <nb-option value="beginner" selected>Beginner</nb-option>
+            <nb-option value="intermediate">Intermediate</nb-option>
+            <nb-option value="advanced">Advanced</nb-option>
+          </nb-select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="overviewTitle" class="col-sm-3 col-form-label">Overview Title</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" id="overviewTitle" minlength="5" maxlength="50" formControlName="overviewTitle">
+          <ng-container *ngIf="f.overviewTitle.invalid && f.overviewTitle.touched">
+            <p class="error-mesage" *ngIf="f.overviewTitle.errors?.minlength">
+              The Overview Title field is too short
+            </p>
+            <p class="error-message" *ngIf="f.overviewTitle.errors?.maxlength">
+              The Overview Title field is too long
+            </p>
+          </ng-container>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="overviewText" class="col-sm-3 col-form-label">Overview Text</label>
+        <div class="col-sm-9">
+          <textarea rows="5" nbInput fullWidth shape="round" id="overviewText"
+                    minlength="8"
+                    maxlength="2000"
+                    width="100%"
+                    placeholder="Add overview description"
+                    formControlName="overviewText"></textarea>
+          <ng-container *ngIf="f.overviewText.invalid && f.overviewText.touched">
+            <p class="error-mesage" *ngIf="f.overviewText.errors?.minlength">
+              The overview field is too short
+            </p>
+            <p class="error-message" *ngIf="f.overviewText.errors?.maxlength">
+              The overview field is too long
+            </p>
+          </ng-container>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="instructionTitle" class="col-sm-3 col-form-label">Instruction Title</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" id="instructionTitle" minlength="5" maxlength="50" formControlName="instructionTitle">
+          <ng-container *ngIf="f.instructionTitle.invalid && f.instructionTitle.touched">
+            <p class="error-mesage" *ngIf="f.instructionTitle.errors?.minlength">
+              The Overview Title field is too short
+            </p>
+            <p class="error-message" *ngIf="f.instructionTitle.errors?.maxlength">
+              The Overview Title field is too long
+            </p>
+          </ng-container>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="instructionText" class="col-sm-3 col-form-label">Instruction Text</label>
+        <div class="col-sm-9">
+          <nb-card-body>
+            <ckeditor [editor]="Editor" data="<p>Hello, world!</p>" id="instructionText" formControlName="instructionText"></ckeditor>
+          </nb-card-body>
+          <ng-container *ngIf="f.instructionText.invalid && f.instructionText.touched">
+            <p class="error-mesage" *ngIf="f.overviewText.errors?.minlength">
+              The instruction field is too short
+            </p>
+            <p class="error-message" *ngIf="f.instructionText.errors?.maxlength">
+              The instruction field is too long
+            </p>
+          </ng-container>
+        </div>
+      </div>
+      <!-- TIPS SECTION -->
+      <div class="form-group row">
+        <label for="tipsTitle" class="col-sm-3 col-form-label">Tips Title</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" id="tipsTitle" minlength="5" maxlength="50" formControlName="tipsTitle">
+          <ng-container *ngIf="f.tipsTitle.invalid && f.tipsTitle.touched">
+            <p class="error-mesage" *ngIf="f.tipsTitle.errors?.minlength">
+              The Overview Title field is too short
+            </p>
+            <p class="error-message" *ngIf="f.tipsTitle.errors?.maxlength">
+              The Overview Title field is too long
+            </p>
+          </ng-container>
+        </div>
+      </div>
+      <!-- TIPS TEXT -->
+      <div class="form-group row">
+        <label for="tipsText" class="col-sm-3 col-form-label">Tips Text</label>
+        <div class="col-sm-9">
+          <nb-card>
+            <nb-card-body>
+              <ckeditor [editor]="Editor" data="<p>Hello, world!</p>" id="tipsText" formControlName="tipsText"></ckeditor>
+            </nb-card-body>
+          </nb-card>
+          <ng-container *ngIf="f.tipsText.invalid && f.tipsText.touched">
+            <p class="error-mesage" *ngIf="f.overviewText.errors?.minlength">
+              The instruction field is too short
+            </p>
+            <p class="error-message" *ngIf="f.tipsText.errors?.maxlength">
+              The instruction field is too long
+            </p>
+          </ng-container>
+        </div>
+      </div>
+      <!-- / END TIPS TEXT-->
+      <div>
+        <button nbButton hero>Update Workout</button>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>

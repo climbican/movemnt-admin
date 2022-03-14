@@ -1,0 +1,197 @@
+<nb-card>
+  <nb-card-header>Add New Routine</nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="routineForm" (ngSubmit)="submitAddRoutine()">
+      <!-- Routine Image -->
+      <div class="form-group row">
+        <label for="title" class="col-sm-3 col-form-label">Lead Image</label>
+        <div class="col-md-4 fa-pull-left">
+          <div class="card">
+            <div class="card-body">
+              <nb-card>
+                <nb-card-header> Select start or single Image
+                  <span style="float:right;">
+                <div *ngIf="fileData !== null">
+                  <button nbButton hero (click)="removeImage()">Remove image</button>
+              </div>
+              </span>
+                </nb-card-header>
+                <div class="mb-3" *ngIf="previewUrl" style="text-align:center;width:100%;">
+                  <img [src]="previewUrl" height="200"/>
+                </div>
+                <nb-card-footer>
+                  <input #fileInput class="fileSelectButton" type="file" (change)="onFileChange($event)" accept="image/gif, image/jpeg, image/png"/>
+                </nb-card-footer>
+              </nb-card>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /End Routine Image -->
+      <div class="form-group row">
+        <label for="title" class="col-sm-3 col-form-label">Title</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" id="title" formControlName="title" placeholder="Routine Name">
+          <ng-container *ngIf="f.title.invalid && f.title.touched">
+            <p class="error-message" *ngIf="f.title.errors?.required">
+              The title is required
+            </p>
+            <p class="error-mesage" *ngIf="f.title.errors?.minlength">
+              The title field is too short
+            </p>
+            <p class="error-message" *ngIf="f.title.errors?.maxlength">
+              The title field is too long
+            </p>
+          </ng-container>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="description" class="col-sm-3 col-form-label">Description</label>
+        <div class="col-sm-9">
+          <textarea rows="5" nbInput fullWidth shape="round" id="description"
+                    minlength="8"
+                    maxlength="2000"
+                    width="100%"
+                    placeholder="Add Routine Description"
+                    formControlName="description" required></textarea>
+          <ng-container *ngIf="f.description.invalid && f.description.touched">
+            <p class="error-message" *ngIf="f.description.errors?.required">
+              The description is required
+            </p>
+            <p class="error-mesage" *ngIf="f.description.errors?.minlength">
+              The description field is too short
+            </p>
+            <p class="error-message" *ngIf="f.description.errors?.maxlength">
+              The description field is too long
+            </p>
+            <p class="error-message" *ngIf="f.description.errors?.pattern">
+              Please enter a valid description
+            </p>
+          </ng-container>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="routineGoal" class="col-sm-3 col-form-label">Routine Cat / Goal</label>
+        <div class="col-sm-9">
+          <nb-select id="routineGoal" name="routineGoal" formControlName="routineGoal" fullWidth>
+            <nb-option>--select--</nb-option>
+            <nb-option *ngFor="let w of workoutTypesSelect" [value]="w.id">{{w.name}}</nb-option>
+          </nb-select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="experienceLevel" class="col-sm-3 col-form-label">Experience Level</label>
+        <div class="col-sm-9">
+          <nb-select id="experienceLevel" name="experienceLevel" formControlName="experienceLevel" fullWidth>
+            <nb-option value="1" selected>Beginner</nb-option>
+            <nb-option value="2">Intermediate</nb-option>
+            <nb-option value="3">Advanced</nb-option>
+          </nb-select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="timeToComplete" class="col-sm-3 col-form-label">Time To Complete</label>
+        <div class="col-sm-9">
+          <input type="number" class="form-control" id="timeToComplete" minlength="1" maxlength="3" formControlName="timeToComplete" placeholder="0" required>
+          <ng-container *ngIf="f.timeToComplete.invalid && f.timeToComplete.touched">
+            <p class="error-message" *ngIf="f.timeToComplete.errors?.required">
+              The time To Complete is required
+            </p>
+            <p class="error-mesage" *ngIf="f.timeToComplete.errors?.minlength">
+              The time To Complete field is too short
+            </p>
+            <p class="error-message" *ngIf="f.timeToComplete.errors?.maxlength">
+              The time To Complete field is too long
+            </p>
+          </ng-container>
+        </div>
+      </div>
+      <!--START -- DYNAMIC LIST OF WORKOUTS FOR THIS ROUTINE -->
+      <nb-card>
+        <nb-card-header>Workouts in Routine <span style="float:right;"><button nbButton hero (click)="addWorkoutFieldSet(2000)">Add</button></span></nb-card-header>
+        <div *ngFor="let w of g.controls; let j = index" [formGroup]="w" style="margin:8px;">
+          <div class="row">
+            <div class="col-1">
+              {{j+1 + '.'}}
+            </div>
+            <div class="col-11">
+              <div class="row">
+                <div class="form-group col-md-2" *ngIf="!isSuperSet(j)">
+                  <label for="hasSuperset" class="col-form-label">Has Superset</label>
+                  <div style="padding-top:5px;text-align:center;">
+                    <nb-checkbox status="success" class="col-sm-4"
+                                 id="hasSuperset"
+                                 name="hasSuperset"
+                                 formControlName="hasSuperset"
+                                 [checked]="1"
+                                 (change)="addRemoveSuperSet(j, $event)"></nb-checkbox>
+                  </div>
+                </div>
+                <div class="form-group col-md-2" style="margin-top:40px;" *ngIf="isSuperSet(j)">Is superset</div>
+                <div class="form-group col-md-2">
+                  <label for="hasSuperset" class="col-form-label">Uses Repetitions</label>
+                  <div style="padding-top:5px;text-align:center;">
+                    <nb-checkbox status="success" class="col-sm-4"
+                                 id="useRepetitions"
+                                 name="useRepetitions"
+                                 formControlName="useRepetitions"
+                                 [checked]="1"></nb-checkbox>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <!-- WORKOUT LIST START -->
+                <div class="form-group col-md-3">
+                  <label for="workoutId" class="col-form-label">Workout</label>
+                  <div>
+                    <nb-select id="workoutId" name="workoutId" formControlName="workoutId" fullWidth>
+                      <nb-option>--select--</nb-option>
+                      <nb-option *ngFor="let workouts of workoutList" [value]="workouts.id">{{workouts.title}}</nb-option>
+                    </nb-select>
+                  </div>
+                </div>
+                <!-- SETS SELECT -->
+                <div class="form-group col-md-3">
+                  <label for="sets" class="col-form-label">Sets</label>
+                  <div>
+                    <nb-select id="sets" name="sets" formControlName="sets" fullWidth>
+                      <nb-option value="">--Select--</nb-option>
+                      <nb-option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]" value="{{i}}">{{i}}</nb-option>
+                    </nb-select>
+                  </div>
+                </div>
+                <!-- REPS PER SET -->
+                <div class="form-group col-md-3">
+                  <label for="repsOrTime" class="col-form-label">Time Secs / Reps</label>
+                  <div>
+                    <input type="text" class="form-control" id="repsOrTime" formControlName="repsOrTime" placeholder="#">
+                  </div>
+                </div>
+                <!-- INTERVAL -->
+                <div class="form-group col-md-2">
+                  <label for="interval" class="col-form-label">Time interval</label>
+                  <div>
+                    <nb-select id="interval" name="interval" formControlName="interval" fullWidth>
+                      <nb-option value="">--Select--</nb-option>
+                      <nb-option *ngFor="let i of [15,30,45,60,90,120,180]" value="{{i}}">{{i}}</nb-option>
+                    </nb-select>
+                  </div>
+                </div>
+                <div class="form-group col-md-1" style="margin-top:40px;" *ngIf="!isSuperSet(j)">
+                  <nb-action>
+                    <nb-icon class="action-icon" icon="trash-outline" (click)="removeWorkoutFieldSet(j)"></nb-icon>
+                  </nb-action>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr>
+        </div>
+      </nb-card>
+      <!--/ END -- DYNAMIC LIST OF WORKOUTS FOR THIS ROUTINE -->
+      <div class="row">
+        <button nbButton hero>Add Routine</button>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>

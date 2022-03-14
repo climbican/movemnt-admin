@@ -1,0 +1,35 @@
+@import '../../../@theme/styles/themes';
+
+.fileSelectButton {
+  background-image: linear-gradient(to right, #598bff, #3366ff);
+  border: none;
+  box-shadow: 0 0 0 0 #274bdb, 0 0 0 0 #1a34b8, 0 0 transparent;
+  color: #ffffff;
+  padding: 0.75rem 1.1875rem;
+  text-transform: uppercase;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  line-height: 1rem;
+}
+
+
+.multi-select {
+  Line-height: 1.5rem; padding: 0.4375rem 1.125rem;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0.2rem;
+  background-color: #f7f9fc;
+  border-color: #e4e9f2;
+  color: #222b45;
+}
+
+.multi-select:hover {
+  background-color:
+          #edf1f7;
+  border-color:
+          #e4e9f2;
+}
+
+.mat-option {
+  background-color: #fefefe;
+}

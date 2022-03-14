@@ -1,0 +1,60 @@
+<nb-card>
+  <nb-card-header>
+    Equipment List
+    <div class="fa-pull-right">
+      <button type="button" class="btn btn-sm btn-primary" routerLink="/pages/equipment/add">
+        Add new Equipment
+      </button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <!-- search field -->
+    <ng-container>
+      <div style="padding-left:40px;padding-bottom:15px;">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium">
+      </div>
+    </ng-container>
+    <table mat-table [dataSource]="matTableData" multiTemplateDataRows class="mat-elevation-z8" #tableRef>
+      <ng-container matColumnDef="imageLink">
+        <th mat-header-cell *matHeaderCellDef> Image</th>
+        <td mat-cell *matCellDef="let element">
+          <div *ngIf="element.mediaLink === ''"><img src="{{previewUrl}}" height="130px"/></div>
+          <div *ngIf="element.mediaLink !== ''"><img src="{{element.mediaLink}}" height="130px"/></div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> ID </th>
+        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+      </ng-container>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+      <!-- Date created -->
+      <ng-container matColumnDef="createdOn">
+        <th mat-header-cell *matHeaderCellDef> Created On </th>
+        <td mat-cell *matCellDef="let element"> {{ (element.createdOn*1000) | date: 'mediumDate'}} </td>
+      </ng-container>
+      <!--   ACTIONS -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Action </th>
+        <td mat-cell *matCellDef="let element">
+          <nb-actions size="medium" fullWidth>
+            <nb-action>
+              <nb-icon class="action-icon" icon="edit" [routerLink]="['/pages/equipment/edit', element.id | number]"></nb-icon>
+            </nb-action>
+            <nb-action>
+              <nb-icon class="action-icon" icon="trash-outline" (click)="onDeleteConfirm(element.id)"></nb-icon>
+            </nb-action>
+          </nb-actions>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row">
+      </tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </nb-card-body>
+</nb-card>
+

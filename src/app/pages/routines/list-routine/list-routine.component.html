@@ -1,0 +1,59 @@
+<nb-card>
+  <nb-card-header>
+    Routine List
+    <div class="fa-pull-right">
+      <button type="button" class="btn btn-sm btn-primary" routerLink="/pages/routines/add">
+        Add new Routine
+      </button>
+    </div>
+  </nb-card-header>
+
+  <nb-card-body>
+    <!-- search field -->
+    <ng-container>
+      <div style="padding-left:40px;padding-bottom:15px;">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium">
+      </div>
+    </ng-container>
+    <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" #tableRef>
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> ID </th>
+        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef> Title </th>
+        <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+      </ng-container>
+      <ng-container matColumnDef="authorName">
+        <th mat-header-cell *matHeaderCellDef> Author </th>
+        <td mat-cell *matCellDef="let element"> {{ element.authorName}} </td>
+      </ng-container>
+      <ng-container matColumnDef="createDate">
+        <th mat-header-cell *matHeaderCellDef> Created On </th>
+        <td mat-cell *matCellDef="let element"> {{ (element.createDate*1000) | date: 'mediumDate'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Action </th>
+        <td mat-cell *matCellDef="let element">
+          <nb-actions size="medium" fullWidth>
+            <nb-action>
+              <nb-icon class="action-icon" icon="edit" [routerLink]="['/pages/routines/edit', element.id | number]"></nb-icon>
+            </nb-action>
+            <nb-action>
+              <nb-icon class="action-icon" icon="trash-outline" (click)="onDeleteConfirm(element.id)"></nb-icon>
+            </nb-action>
+          </nb-actions>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
+          class="example-element-row">
+      </tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </nb-card-body>
+</nb-card>
+

@@ -1,0 +1,89 @@
+<nb-card>
+  <nb-card-header>Update User</nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="userUpdateForm" (ngSubmit)="submitUserUpdate()">
+      <div class="form-group row">
+        <label for="name" class="col-sm-3 col-form-label">Name</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" id="name" minlength="3" maxlength="50" formControlName="name" placeholder="Name" required>
+          <ng-container *ngIf="f.name.invalid && f.name.touched">
+            <p class="error-message" *ngIf="f.name.errors?.required">
+              The name is required
+            </p>
+            <p class="error-mesage" *ngIf="f.name.errors?.minLength">
+              The name field is too short
+            </p>
+            <p class="error-message" *ngIf="f.name.errors?.maxLength">
+              The name field is too long
+            </p>
+          </ng-container>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="email" class="col-sm-3 col-form-label">Email</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" id="email" minlength="8" maxlength="50" formControlName="email" placeholder="e@mail.com" required>
+          <ng-container *ngIf="f.email.invalid && f.email.touched">
+            <p class="error-message" *ngIf="f.email.errors?.required">
+              The email is required
+            </p>
+            <p class="error-mesage" *ngIf="f.email.errors?.minLength">
+              The email field is too short
+            </p>
+            <p class="error-message" *ngIf="f.email.errors?.maxLength">
+              The email field is too long
+            </p>
+            <p class="error-message" *ngIf="f.email.errors?.pattern">
+              Please email a valid email address
+            </p>
+          </ng-container>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="phone" class="col-sm-3 col-form-label">Phone</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" id="phone" minlength="7" maxlength="20" formControlName="phone" required>
+          <ng-container *ngIf="f.phone.invalid && f.phone.touched">
+            <p class="error-message" *ngIf="f.phone.errors?.required">
+              The phone is required
+            </p>
+            <p class="error-mesage" *ngIf="f.name.errors?.minLength">
+              The phone field is too short
+            </p>
+            <p class="error-message" *ngIf="f.name.errors?.maxLength">
+              The phone field is too long
+            </p>
+          </ng-container>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="password" class="col-sm-3 col-form-label">Password</label>
+        <div class="col-sm-9">
+          <input type="password" class="form-control" id="password" minlength="7" maxlength="20" formControlName="password" appPassword>
+          <ng-container *ngIf="f.password.invalid && f.password.touched">
+            <p class="error-mesage" *ngIf="f.name.errors?.minLength">
+              The name field is too short
+            </p>
+            <p class="error-message" *ngIf="f.name.errors?.maxLength">
+              The name field is too long
+            </p>
+          </ng-container>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="name" class="col-sm-3 col-form-label">User Type</label>
+        <div class="col-sm-9">
+          <select class="form-control" id="userType" name="userType" formControlName="userType">
+            <option value="1">Super Admin</option>
+            <option value="2">Admin</option>
+            <option value="3">App User</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <button class="btn-demo" nbButton hero>Update</button>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
